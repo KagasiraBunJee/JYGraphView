@@ -84,6 +84,10 @@ NSInteger const kPointLabelHeight = 20;
     self.graphView = [[UIView alloc] initWithFrame:self.frame];
     self.backgroundColor = self.backgroundViewColor;
     [self setContentSize:CGSizeMake(self.graphWidth, self.frame.size.height)];
+    for(UIView *view in self.subviews)
+    {
+        [view removeFromSuperview];
+    }
     [self addSubview:_graphView];
     
     NSInteger xCoordOffset = (self.graphWidth / [_graphData count]) / 2;
@@ -100,6 +104,7 @@ NSInteger const kPointLabelHeight = 20;
     if (range == 0) {
         lowest = 0;
         if (highest == 0) highest = 10; //arbitary number in case all numbers are 0
+        else if(self.maxY > 0) highest = self.maxY;
         range = highest * 2;
     }
     
@@ -165,6 +170,10 @@ NSInteger const kPointLabelHeight = 20;
     float lowest = [[array objectAtIndex:0] floatValue];
     
     float highest = [[array objectAtIndex:[array count] - 1] floatValue];
+    
+    if(self.maxY > 0){
+        highest = (float)self.maxY;
+    }
     
     float range = highest - lowest;
     

@@ -25,6 +25,8 @@
 // Width of the stroke of the graph line
 @property NSUInteger strokeWidth;
 
+@property NSUInteger maxY;
+
 // Choose whether to hide the graph line and just show points
 // defaults to NO
 @property (assign) BOOL hideLines;
