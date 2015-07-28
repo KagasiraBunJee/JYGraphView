@@ -69,6 +69,8 @@ typedef enum
 // Colour of the background for the x and y axis UILabels
 @property (strong, nonatomic) UIColor *labelBackgroundColor;
 
+@property (assign) NSInteger chartBottomOffset;
+
 //new
 
 @property (assign) BOOL showBar;
@@ -94,6 +96,9 @@ typedef enum
 
 //state bar image YValueOffset
 @property (assign) NSInteger stateBarImageYOffset;
+
+//state bar image YValueOffset
+@property (assign) NSInteger stateBarImageHeight;
 
 //state bar image Y Value
 @property (assign) NSInteger stateBarImageYValue;

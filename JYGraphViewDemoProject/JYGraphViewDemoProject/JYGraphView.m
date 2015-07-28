@@ -131,6 +131,10 @@ NSInteger const kPointLabelHeight = 20;
     if (!self.showBar) {
         self.showBar = NO;
     }
+    
+    if (!self.chartBottomOffset) {
+        self.chartBottomOffset = 0.0;
+    }
 }
 
 #pragma mark - Graph plotting
@@ -179,7 +183,7 @@ NSInteger const kPointLabelHeight = 20;
         }
         
         NSInteger offSetFromTop = 10;
-        NSInteger offsetFromBottom = 10;
+        NSInteger offsetFromBottom = self.chartBottomOffset;
         float screenHeight = (self.frame.size.height - (offsets)) / (self.frame.size.height + offSetFromTop + offsetFromBottom);
         
         CGPoint point = CGPointMake(xCoord,
@@ -266,7 +270,7 @@ NSInteger const kPointLabelHeight = 20;
     //drawingImage
     UIImage *image = [UIImage imageNamed:self.stateBarImageName];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-    [imageView setContentMode:UIViewContentModeCenter];
+    [imageView setContentMode:UIViewContentModeScaleAspectFit];
     
     NSInteger yImagePos = 0;
     switch (self.stateBarImagePosition) {
@@ -287,9 +291,13 @@ NSInteger const kPointLabelHeight = 20;
             break;
     }
     
-    imageView.frame = CGRectMake(xValue-(28/2), yImagePos+(self.stateBarImageYOffset), 28.0, 28.0);
+    imageView.frame = CGRectMake(xValue-(self.stateBarImageHeight/2), yImagePos+(self.stateBarImageYOffset), self.stateBarImageHeight, self.stateBarImageHeight);
+    
+    imageView.layer.contentsRect = CGRectMake(-0.12, -0.1, 1.3, 1.3);
+    
     imageView.layer.cornerRadius = self.stateBarImageCornerRadius;
     imageView.layer.masksToBounds = YES;
+    imageView.clipsToBounds = YES;
     imageView.backgroundColor = self.stateBarImageBackgroundColor;
     [_graphView addSubview:imageView];
     
@@ -324,8 +332,8 @@ NSInteger const kPointLabelHeight = 20;
     [label setTextColor:self.stateBarLabelTextColor];
     [_graphView addSubview:label];
     
-    CGPathMoveToPoint(linePath, NULL, xValue, 0.0);
-    CGPathAddLineToPoint(linePath, NULL, xValue, height);
+    CGPathMoveToPoint(linePath, NULL, xValue, imageView.frame.size.height);
+    CGPathAddLineToPoint(linePath, NULL, xValue, label.frame.origin.y);
     
     lineShape.path = linePath;
     CGPathRelease(linePath);
