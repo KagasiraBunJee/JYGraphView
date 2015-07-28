@@ -186,7 +186,16 @@
     graphView.labelFont = [UIFont fontWithName:[fontArray firstObject] size:12];
     graphView.labelFontColor = self.fontColour;
     graphView.labelBackgroundColor = self.labelColour;
-        
+    
+    graphView.showBar = YES;
+    graphView.stateBarLabelYOffset = -20;
+    graphView.stateBarLabelCornerRadius = 20/2;
+    graphView.stateBarLabelSize = CGRectMake(0, 0, 50, 20);
+    graphView.stateBarBackgroundColor = [UIColor colorWithRed:0.855 green:0.835 blue:0.835 alpha:1.000];
+    graphView.stateBarImageBackgroundColor = [UIColor colorWithRed:0.988 green:0.984 blue:0.906 alpha:1.000];
+    graphView.stateBarLabelBackgroundColor = [UIColor colorWithRed:0.988 green:0.984 blue:0.906 alpha:1.000];
+    graphView.stateBarImageCornerRadius = 15;
+    
     [self.graphContainerView addSubview:graphView];
 }
 

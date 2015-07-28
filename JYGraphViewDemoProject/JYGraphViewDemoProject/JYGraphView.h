@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum
+{
+    TOP,
+    BOTTOM,
+    CENTER,
+    CUSTOM
+}StateBarPosition;
+
 @interface JYGraphView : UIScrollView
 
 // Array of NSNumbers used to plot points on graph
@@ -60,6 +68,69 @@
 
 // Colour of the background for the x and y axis UILabels
 @property (strong, nonatomic) UIColor *labelBackgroundColor;
+
+//new
+
+@property (assign) BOOL showBar;
+
+//state bar color
+@property (strong, nonatomic) UIColor *stateBarBackgroundColor;
+
+//stateBar width
+@property (assign) NSInteger stateBarWidth;
+
+//state bar image
+//state bar image size
+@property (assign) CGRect stateBarImageSize;
+
+//state bar image background
+@property (strong, nonatomic) UIColor *stateBarImageBackgroundColor;
+
+//state bar image name
+@property (strong, nonatomic) NSString *stateBarImageName;
+
+//image radius
+@property (assign) NSInteger stateBarImageCornerRadius;
+
+//state bar image YValueOffset
+@property (assign) NSInteger stateBarImageYOffset;
+
+//state bar image Y Value
+@property (assign) NSInteger stateBarImageYValue;
+
+//state bar label position
+@property(assign) StateBarPosition stateBarImagePosition;
+
+//state bar label
+//state bar label size
+@property (assign) CGRect stateBarLabelSize;
+
+//label radius
+@property (assign) NSInteger stateBarLabelCornerRadius;
+
+//label text
+@property (assign) NSString *stateBarLabelText;
+
+//state bar label background color
+@property (strong, nonatomic) UIColor *stateBarLabelBackgroundColor;
+
+//state bar label text color
+@property (strong, nonatomic) UIColor *stateBarLabelTextColor;
+
+//state bar label text font
+@property (strong, nonatomic) UIFont *stateBarLabelFont;
+
+//state bar label text size
+@property (assign) NSInteger stateBarLabelTextSize;
+
+//state bar label YValueOffset
+@property (assign) NSInteger stateBarLabelYOffset;
+
+//state bar label Y Value
+@property (assign) NSInteger stateBarLabelYValue;
+
+//state bar label position
+@property(assign) StateBarPosition stateBarLabelPosition;
 
 - (void)plotGraphData;
 

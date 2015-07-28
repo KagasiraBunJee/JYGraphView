@@ -72,6 +72,65 @@ NSInteger const kPointLabelHeight = 20;
     if (!self.strokeWidth) {
         self.strokeWidth = 2;
     }
+    
+    if (!self.stateBarWidth) {
+        self.stateBarWidth = 1.0;
+    }
+    if (!self.stateBarBackgroundColor) {
+        self.stateBarBackgroundColor = [UIColor blackColor];
+    }
+    
+    if (!self.stateBarImageCornerRadius) {
+        self.stateBarImageCornerRadius = 0;
+    }
+    
+    if (!self.stateBarImageYOffset) {
+        self.stateBarImageYOffset = 0.0;
+    }
+    
+    if (!self.stateBarImageYValue) {
+        self.stateBarImageYValue = 0;
+    }
+    
+    if (!self.stateBarImagePosition) {
+        self.stateBarImagePosition = TOP;
+    }
+    
+    if (!self.stateBarLabelCornerRadius) {
+        self.stateBarLabelCornerRadius = 0;
+    }
+    
+    if (!self.stateBarLabelBackgroundColor) {
+        self.stateBarLabelBackgroundColor = [UIColor blackColor];
+    }
+    
+    if (!self.stateBarLabelTextColor) {
+        self.stateBarLabelTextColor = [UIColor whiteColor];
+    }
+    
+    if (!self.stateBarLabelFont) {
+        self.stateBarLabelFont = [UIFont fontWithName:@"Helvetica" size:14.0];
+    }
+    
+    if (!self.stateBarLabelYOffset) {
+        self.stateBarLabelYOffset = 0;
+    }
+    
+    if (!self.stateBarLabelYValue) {
+        self.stateBarLabelYValue = 0;
+    }
+    
+    if (!self.stateBarLabelPosition) {
+        self.stateBarLabelPosition = BOTTOM;
+    }
+    
+    if (!self.stateBarLabelText) {
+        self.stateBarLabelText = @"";
+    }
+    
+    if (!self.showBar) {
+        self.showBar = NO;
+    }
 }
 
 #pragma mark - Graph plotting
@@ -128,8 +187,11 @@ NSInteger const kPointLabelHeight = 20;
                                                                ((self.frame.size.height * screenHeight) / range)) - 
                                                               (lowest * ((self.frame.size.height * screenHeight) / range ))+
                                                               offsetFromBottom));
+        if (self.showBar) {
+            [self drawStateBar:point];
+        }
         
-        [self createBackgroundVerticalBarWithXCoord:point withXAxisLabelIndex:counter-1];
+//        [self createBackgroundVerticalBarWithXCoord:point withXAxisLabelIndex:counter-1];
         
         if (self.hideLabels == NO) {
             [self createPointLabelForPoint:point withLabelText:[NSString stringWithFormat:@"%@",[_graphData objectAtIndex:counter - 1]]];
@@ -183,6 +245,94 @@ NSInteger const kPointLabelHeight = 20;
                                 [NSNumber numberWithFloat:range], @"range", nil];
     
     return graphRange;
+}
+
+- (void) drawStateBar:(CGPoint)forPoint
+{
+    NSInteger xValue = forPoint.x;
+    NSInteger height = self.frame.size.height;
+    
+    CAShapeLayer *lineShape = nil;
+    CGMutablePathRef linePath = nil;
+    linePath = CGPathCreateMutable();
+    lineShape = [CAShapeLayer layer];
+    
+    lineShape.lineWidth = self.stateBarWidth;
+    lineShape.lineCap = kCALineCapRound;
+    lineShape.lineJoin = kCALineJoinBevel;
+    
+    lineShape.strokeColor = [self.stateBarBackgroundColor CGColor];
+    
+    //drawingImage
+    UIImage *image = [UIImage imageNamed:self.stateBarImageName];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    [imageView setContentMode:UIViewContentModeCenter];
+    
+    NSInteger yImagePos = 0;
+    switch (self.stateBarImagePosition) {
+        case TOP:
+            yImagePos = 0;
+            break;
+        case BOTTOM:
+            yImagePos = height;
+            break;
+        case CENTER:
+            yImagePos = height/2-24/2;
+            break;
+        case CUSTOM:
+            yImagePos = self.stateBarImageYValue;
+            break;
+        default:
+            yImagePos = 0;
+            break;
+    }
+    
+    imageView.frame = CGRectMake(xValue-(28/2), yImagePos+(self.stateBarImageYOffset), 28.0, 28.0);
+    imageView.layer.cornerRadius = self.stateBarImageCornerRadius;
+    imageView.layer.masksToBounds = YES;
+    imageView.backgroundColor = self.stateBarImageBackgroundColor;
+    [_graphView addSubview:imageView];
+    
+    //drawing label
+    NSInteger yLabelPos = 0;
+    switch (self.stateBarLabelPosition) {
+        case TOP:
+            yLabelPos = 0;
+            break;
+        case BOTTOM:
+            yLabelPos = height;
+            break;
+        case CENTER:
+            yLabelPos = height/2-24/2;
+            break;
+        case CUSTOM:
+            yLabelPos = self.stateBarLabelYValue;
+            break;
+        default:
+            yLabelPos = 0;
+            break;
+    }
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(xValue-(self.stateBarLabelSize.size.width/2), yLabelPos+(self.stateBarLabelYOffset), self.stateBarLabelSize.size.width, self.stateBarLabelSize.size.height)];
+    [label setText:self.stateBarLabelText];
+    label.layer.cornerRadius = self.stateBarLabelCornerRadius;
+    label.layer.masksToBounds = YES;
+    label.font = self.stateBarLabelFont;
+    label.backgroundColor = self.stateBarLabelBackgroundColor;
+    label.textAlignment = NSTextAlignmentCenter;
+    [label setAdjustsFontSizeToFitWidth:YES];
+    [label setTextColor:self.stateBarLabelTextColor];
+    [_graphView addSubview:label];
+    
+    CGPathMoveToPoint(linePath, NULL, xValue, 0.0);
+    CGPathAddLineToPoint(linePath, NULL, xValue, height);
+    
+    lineShape.path = linePath;
+    CGPathRelease(linePath);
+    
+    [_graphView.layer addSublayer:lineShape];
+    
+    lineShape = nil;
 }
 
 #pragma mark - Drawing methods
@@ -240,7 +390,7 @@ NSInteger const kPointLabelHeight = 20;
     lineShape = [CAShapeLayer layer];
     
     lineShape.lineWidth = self.strokeWidth;
-    lineShape.lineCap = kCALineCapRound;;
+    lineShape.lineCap = kCALineCapRound;
     lineShape.lineJoin = kCALineJoinBevel;
     
     lineShape.strokeColor = [colour CGColor];
