@@ -171,6 +171,19 @@
     // Can send numbers or strings (it's printed using stringWithFormat:"%@")
     graphView.graphDataLabels = [self createXAxisLabelArray];
     
+    NSMutableDictionary *points = [[NSMutableDictionary alloc] init];
+    
+    for (int x = 20; x < 40; x++) {
+        
+        NSDictionary *dictionary = @{
+                                     @"image":@"test",
+                                     @"time":@""
+        };
+        
+        [points setValue:dictionary forKey:[NSString stringWithFormat:@"%i",x]];
+    }
+    
+    graphView.pointsWithBar = points;
     // Customisation options
     graphView.pointFillColor = self.pointColour;
     graphView.strokeColor = self.strokeColour;

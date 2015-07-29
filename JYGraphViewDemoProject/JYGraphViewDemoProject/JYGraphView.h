@@ -14,6 +14,7 @@ typedef enum
     BOTTOM,
     CENTER,
     CUSTOM
+    
 }StateBarPosition;
 
 @interface JYGraphView : UIScrollView
@@ -70,6 +71,8 @@ typedef enum
 @property (strong, nonatomic) UIColor *labelBackgroundColor;
 
 @property (assign) NSInteger chartBottomOffset;
+
+@property (strong, nonatomic) NSDictionary *pointsWithBar;
 
 //new
 

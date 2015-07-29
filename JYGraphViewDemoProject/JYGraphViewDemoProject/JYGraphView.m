@@ -192,7 +192,9 @@ NSInteger const kPointLabelHeight = 20;
                                                               (lowest * ((self.frame.size.height * screenHeight) / range ))+
                                                               offsetFromBottom));
         if (self.showBar) {
-            [self drawStateBar:point];
+            if ([self.pointsWithBar valueForKey:[NSString stringWithFormat:@"%i", [[_graphData objectAtIndex:counter - 1] intValue]]] != NULL) {
+                [self drawStateBar:point withIndex:((int)counter)];
+            }
         }
         
 //        [self createBackgroundVerticalBarWithXCoord:point withXAxisLabelIndex:counter-1];
@@ -252,6 +254,7 @@ NSInteger const kPointLabelHeight = 20;
 }
 
 - (void) drawStateBar:(CGPoint)forPoint
+            withIndex:(int)index
 {
     NSInteger xValue = forPoint.x;
     NSInteger height = self.frame.size.height;
@@ -268,7 +271,12 @@ NSInteger const kPointLabelHeight = 20;
     lineShape.strokeColor = [self.stateBarBackgroundColor CGColor];
     
     //drawingImage
-    UIImage *image = [UIImage imageNamed:self.stateBarImageName];
+    int dataValue = [[_graphData objectAtIndex:index - 1] intValue];
+    
+    NSDictionary *dictionary = [self.pointsWithBar valueForKey:[NSString stringWithFormat:@"%i", dataValue]];
+    NSString *imageName = dictionary[@"image"];
+    
+    UIImage *image = [UIImage imageNamed:imageName];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     [imageView setContentMode:UIViewContentModeScaleAspectFit];
     
@@ -322,7 +330,8 @@ NSInteger const kPointLabelHeight = 20;
     }
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(xValue-(self.stateBarLabelSize.size.width/2), yLabelPos+(self.stateBarLabelYOffset), self.stateBarLabelSize.size.width, self.stateBarLabelSize.size.height)];
-    [label setText:self.stateBarLabelText];
+    NSString *labelText = [NSString stringWithFormat:@"%@",[_graphDataLabels objectAtIndex:index - 1]];
+    [label setText:labelText];
     label.layer.cornerRadius = self.stateBarLabelCornerRadius;
     label.layer.masksToBounds = YES;
     label.font = self.stateBarLabelFont;
