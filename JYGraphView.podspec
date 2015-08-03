@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = 'JYGraphView'
-  spec.version      = '0.1.1'
+  spec.version      = '0.1.2'
   spec.license      = { :type => 'MIT' }
   spec.homepage     = 'https://github.com/johnyorke/JYGraphView.git'
   spec.authors      = { 'John Yorke' => 'hello@johnyorke.me' }

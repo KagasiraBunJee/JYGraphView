@@ -137,6 +137,16 @@ NSInteger const kPointLabelHeight = 20;
     }
 }
 
+- (void)addBarPoint:(NSDictionary*) point
+          withIndex:(int) index
+{
+    if (index < 0) {
+        index = (int)[self.graphData count];
+    }
+    
+    [self.pointsWithBar setValue:point forKey:[NSString stringWithFormat:@"%i", index]];
+}
+
 #pragma mark - Graph plotting
 
 - (void)plotGraphData
@@ -270,10 +280,7 @@ NSInteger const kPointLabelHeight = 20;
     
     lineShape.strokeColor = [self.stateBarBackgroundColor CGColor];
     
-    //drawingImage
-    int dataValue = [[_graphData objectAtIndex:index - 1] intValue];
-    
-    NSDictionary *dictionary = [self.pointsWithBar valueForKey:[NSString stringWithFormat:@"%i", dataValue]];
+    NSDictionary *dictionary = [self.pointsWithBar valueForKey:[NSString stringWithFormat:@"%i", index]];
     NSString *imageName = dictionary[@"image"];
     
     UIImage *image = [UIImage imageNamed:imageName];

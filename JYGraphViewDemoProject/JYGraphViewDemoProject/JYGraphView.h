@@ -72,7 +72,7 @@ typedef enum
 
 @property (assign) NSInteger chartBottomOffset;
 
-@property (strong, nonatomic) NSDictionary *pointsWithBar;
+@property (strong, nonatomic) NSMutableDictionary *pointsWithBar;
 
 //new
 
