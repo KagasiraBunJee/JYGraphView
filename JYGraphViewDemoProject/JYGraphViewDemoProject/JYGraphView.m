@@ -202,7 +202,7 @@ NSInteger const kPointLabelHeight = 20;
                                                               (lowest * ((self.frame.size.height * screenHeight) / range ))+
                                                               offsetFromBottom));
         if (self.showBar) {
-            if ([self.pointsWithBar valueForKey:[NSString stringWithFormat:@"%i", [[_graphData objectAtIndex:counter - 1] intValue]]] != NULL) {
+            if ([self.pointsWithBar valueForKey:[NSString stringWithFormat:@"%i", (int)counter-1]] != NULL) {
                 [self drawStateBar:point withIndex:((int)counter)];
             }
         }
@@ -280,7 +280,7 @@ NSInteger const kPointLabelHeight = 20;
     
     lineShape.strokeColor = [self.stateBarBackgroundColor CGColor];
     
-    NSDictionary *dictionary = [self.pointsWithBar valueForKey:[NSString stringWithFormat:@"%i", index]];
+    NSDictionary *dictionary = [self.pointsWithBar valueForKey:[NSString stringWithFormat:@"%i", index-1]];
     NSString *imageName = dictionary[@"image"];
     
     UIImage *image = [UIImage imageNamed:imageName];
@@ -337,7 +337,7 @@ NSInteger const kPointLabelHeight = 20;
     }
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(xValue-(self.stateBarLabelSize.size.width/2), yLabelPos+(self.stateBarLabelYOffset), self.stateBarLabelSize.size.width, self.stateBarLabelSize.size.height)];
-    NSString *labelText = [NSString stringWithFormat:@"%@",[_graphDataLabels objectAtIndex:index - 1]];
+    NSString *labelText = dictionary[@"label"];
     [label setText:labelText];
     label.layer.cornerRadius = self.stateBarLabelCornerRadius;
     label.layer.masksToBounds = YES;
